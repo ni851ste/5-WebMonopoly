@@ -1,4 +1,4 @@
-name := """WeWe"""
+name := """WebMonopoly"""
 organization := "Wde.htwg.se"
 
 version := "1.0-SNAPSHOT"
