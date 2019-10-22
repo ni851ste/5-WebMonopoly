@@ -4,8 +4,12 @@
 # ~~~~
 
 # An example controller showing a sample home page
-GET     /                          controllers.HomeController.playGame()
-GET     /input/:in                 controllers.HomeController.input(in: String)
+GET     /                          controllers.HomeController.index
+GET     /index                          controllers.HomeController.index
+GET     /monopoly                controllers.HomeController.startGame
+
+
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
