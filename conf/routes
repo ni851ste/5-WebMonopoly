@@ -4,9 +4,9 @@
 # ~~~~
 
 # An example controller showing a sample home page
-GET     /                          controllers.HomeController.index
-GET     /index                          controllers.HomeController.index
-GET     /monopoly                controllers.HomeController.startGame
+GET     /                        controllers.HomeController.index
+GET     /index                   controllers.HomeController.index
+GET     /monopoly/:input                controllers.HomeController.startGame(input)
 
 
 

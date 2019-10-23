@@ -1,7 +1,7 @@
 package controllers
 
 import de.htwg.se.monopoly.Monopoly
-import de.htwg.se.monopoly.controller.Controller
+import de.htwg.se.monopoly.controller.{Controller, GameStatus}
 import de.htwg.se.monopoly.util.Observer
 import de.htwg.se.monopoly.view.Tui
 import javax.inject._
@@ -14,27 +14,29 @@ import play.api.mvc._
 @Singleton
 class HomeController @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
 
-    val controller: Controller = Monopoly.controller
-    val tui : Tui = Monopoly.tui
+    val controller: Controller = new Controller()
+    controller.controllerState = GameStatus.START_OF_TURN
+
+    val tui: Tui = new Tui(controller)
+
     controller.add(new Observer {
         override def update(): Unit = {
-            rummyAsString = controller.currentGameMessage()
+            monopolyAsString = controller.currentGameMessage()
+            //Ok(monopolyAsString)
         }
     })
-    var rummyAsString: String = ""
+    var monopolyAsString: String = ""
 
 
     def index() = Action { implicit request: Request[AnyContent] =>
         Ok(views.html.index())
     }
 
-    def startGame(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-        tui.processInput(request.getQueryString("input").getOrElse("ndkahbfhdfsdbfhm"))
-            Ok(rummyAsString)
+    def startGame(input: String): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+        print("INPUT: " + input)
+        tui.processInput(input)
+        Ok(monopolyAsString)
     }
-
-
-
 
 
 }
