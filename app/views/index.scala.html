@@ -1,5 +1,4 @@
-@()
-
-@main("Welcome to Play") {
-  <h1>Welcome to Play!</h1>
+@(output : String, t : List[String])
+@main("Monopoly", t) {
+    <p><b>@(output)</b></p>
 }
