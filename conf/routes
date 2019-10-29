@@ -4,9 +4,10 @@
 # ~~~~
 
 # An example controller showing a sample home page
-GET     /                        controllers.HomeController.index
-GET     /index                   controllers.HomeController.index
-GET     /monopoly/:input                controllers.HomeController.startGame(input)
+GET     /                        controllers.HomeController.rules
+GET     /game                  controllers.HomeController.printState()
+GET     /game/:input                   controllers.HomeController.printStateWithInput(input : String)
+
 
 
 

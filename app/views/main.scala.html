@@ -4,7 +4,7 @@
  * two arguments, a `String` for the title of the page and an `Html`
  * object to insert into the body of the page.
  *@
-@(title: String, b : List[String])(content: Html)
+@(title: String)(content: Html)
 
 @buttonValue(s:String) = @{
     s match {
@@ -26,12 +26,6 @@
         @* And here's where we render the `Html` object containing
          * the page content. *@
         @content
-        @for(s <- b) {
-            <a href="?input=@s">
-                <input type="button" value="@buttonValue(s)" />
-            </a>
-        }
-
 
       <script src="@routes.Assets.versioned("javascripts/main.js")" type="text/javascript"></script>
     </body>
