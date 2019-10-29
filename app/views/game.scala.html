@@ -5,49 +5,51 @@
 
 @(controller: Controller)
 
-@main("Monopoly") {
+    @main("Monopoly") {
 
-    <body>
+        <body>
 
-        <div id="gameInfo">
-        @for(lineOfText <- controller.getCurrentGameMessage().split("\n").map(_.toString()).toList) {
-            <p>@lineOfText</p>
-        }
-        </div>
-        @if(controller.controllerState == GameStatus.START_OF_TURN) {
-            <div>
-                <a href="/game/r">
-                    <input type="button" value="Roll" />
-                </a>
-                <a href="/game/q">
-                    <input type="button" value="Quit Game" />
-                </a>
-            </div>
-        }
-
-        @if(controller.controllerState == GameStatus.CAN_BUILD) {
-
-            @for(fieldSet <- GeneralUtil.getWholeGroups(controller.getCurrentPlayer)) {
-                @for(ownedField <- fieldSet) {
-                    <div>
-                        <p>
-                            @ownedField --
-                            houses:
-                            @controller.getFieldByName(ownedField).get.asInstanceOf[Street].numHouses
-                        <a href=@("/game/" + ownedField + "_1")>
-                            <input type="button" value="buy house on @ownedField"/>
-                        </a>
-                        </p>
-                    </div>
-                }
+            <div class="infoText">
+            @for(lineOfText <- controller.getCurrentGameMessage().split("\n").map(_.toString()).toList) {
+                <p>@lineOfText</p>
             }
-
-            <div>
-                <a href="/game/e">
-                    <input type="button" value="end turn"/>
-                </a>
             </div>
-        }
-    </body>
 
-}
+
+            @if(controller.controllerState == GameStatus.START_OF_TURN) {
+                <div class="buttons">
+                    <a href="/game/r">
+                        <input type="button" value="Roll" />
+                    </a>
+                    <a href="/game/q">
+                        <input type="button" value="Quit Game" />
+                    </a>
+                </div>
+            }
+            @if(controller.controllerState == GameStatus.CAN_BUILD) {
+                <div class="buttons">
+                    @for(fieldSet <- GeneralUtil.getWholeGroups(controller.getCurrentPlayer)) {
+                        @for(ownedField <- fieldSet) {
+                            <div>
+                                <p>
+                                    @ownedField --
+                                    houses:
+                                    @controller.getFieldByName(ownedField).get.asInstanceOf[Street].numHouses
+                                <a href=@("/game/" + ownedField + "_1")>
+                                    <input type="button" value="buy house on @ownedField"/>
+                                </a>
+                                </p>
+                            </div>
+                        }
+                    }
+
+                    <div>
+                        <a href="/game/e">
+                            <input type="button" value="end turn"/>
+                        </a>
+                    </div>
+                </div>
+            }
+        </body>
+
+    }
