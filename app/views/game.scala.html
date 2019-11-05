@@ -3,53 +3,71 @@
 @import de.htwg.se.monopoly.util.GeneralUtil
 @import de.htwg.se.monopoly.model.boardComponent.Street
 
-@(controller: Controller)
+@(controller: Controller, htmlController: HomeController)
 
-    @main("Monopoly") {
+@main("Monopoly") {
+    <link rel="stylesheet" href='@routes.Assets.versioned("stylesheets/game.css")'/>
 
-        <body>
-
-            <div class="infoText">
-            @for(lineOfText <- controller.getCurrentGameMessage().split("\n").map(_.toString()).toList) {
-                <p>@lineOfText</p>
-            }
+    <body id="mainBody">
+        <div class="container">
+            <div class="row">
+                <span class="col-lg-1"></span>
+                <span class="mainHeader border border-primary col-lg-10 col-md-10">
+                    <p id="mainHeaderCurrentPlayer"><b>@controller.getCurrentPlayer.name</b></p>
+                    <p id="mainHeaderCurrentMoney">Money @controller.getCurrentPlayer.money</p>
+                </span>
             </div>
-
-
-            @if(controller.controllerState == GameStatus.START_OF_TURN) {
-                <div class="buttons">
-                    <a href="/game/r">
-                        <input type="button" value="Roll" />
-                    </a>
-                    <a href="/game/q">
-                        <input type="button" value="Quit Game" />
-                    </a>
-                </div>
-            }
-            @if(controller.controllerState == GameStatus.CAN_BUILD) {
-                <div class="buttons">
-                    @for(fieldSet <- GeneralUtil.getWholeGroups(controller.getCurrentPlayer)) {
-                        @for(ownedField <- fieldSet) {
-                            <div>
-                                <p>
-                                    @ownedField --
-                                    houses:
-                                    @controller.getFieldByName(ownedField).get.asInstanceOf[Street].numHouses
-                                <a href=@("/game/" + ownedField + "_1")>
-                                    <input type="button" value="buy house on @ownedField"/>
-                                </a>
-                                </p>
-                            </div>
-                        }
-                    }
-
+            <div class="row">
+                <span class="col-lg-1"></span>
+                <span class="infoText border border-primary col-lg-6 col-md-10 ">
                     <div>
-                        <a href="/game/e">
-                            <input type="button" value="end turn"/>
-                        </a>
+                    @for(lineOfText <- htmlController.getCurrentMessageWeb().split("\n").map(_.toString()).toList) {
+                        <p>@lineOfText</p>
+                    }
                     </div>
-                </div>
-            }
-        </body>
+                </span>
+                <span class="col-lg-1"></span>
+                <span class="buttons border border-primary col-lg-3 col-md-10 ">
+                    @if(controller.controllerState == GameStatus.START_OF_TURN) {
+                        <div class="btn-group buttonGroup">
+                            <a href="/game/r">
+                                <input type="button" value="Roll" class="btn btn-primary"/>
+                            </a>
+                            <a href="/game/q">
+                                <input type="button" value="Quit Game" class="btn btn-danger"/>
+                            </a>
+                        </div>
+                    }
+                    @if(controller.controllerState == GameStatus.CAN_BUILD) {
+                        <div class="btn-group row buttonGroup">
+                            @for(fieldSet <- GeneralUtil.getWholeGroups(controller.getCurrentPlayer)) {
+                                @for(ownedField <- fieldSet) {
+                                    <div class="oneBuyBotton">
+                                        <p>
+                                            @ownedField:
+                                            @controller.getFieldByName(ownedField).get.asInstanceOf[Street].numHouses
+                                             Houses
+                                        <a href=@("/game/" + ownedField + "_1")>
+                                            <input type="button" value="buy house on @ownedField" class="buy-button btn-primary"/>
+                                        </a>
+                                        </p>
+                                        <br>
+                                    </div>
+                                }
+                            }
+                            <br>
+                            <div>
+                                <a href="/game/e">
+                                    <input type="button" value="end turn"/>
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </span>
+                <span class="col-lg-1"></span>
+            </div>
+        </div>
 
-    }
+    </body>
+
+}

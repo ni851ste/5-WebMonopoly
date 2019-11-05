@@ -1,9 +1,25 @@
+@media (max-width: 992px) {
+    #textCol {
+        font-family: "Comic Sans MS", cursive, sans-serif;
+        background-color: mistyrose;
+    }
+}
+
 @media (min-width: 992px) {
     #textCol {
         font-family: "Comic Sans MS", cursive, sans-serif;
         background-color: lightgray;
     }
-    h1, h2, h3, h4, h5 {
-        text-decoration: underline;
+
+    #startGameButton {
+        min-width: 20%;
+
     }
 }
+
+h1, h2, h3, h4, h5 {
+    text-decoration: underline;
+}
+
+
+

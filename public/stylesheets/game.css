@@ -1,0 +1,61 @@
+@media (max-width: 992px) {
+    .infoText {
+        margin-top: 2em;
+        margin-bottom: 2em;
+    }
+
+    .buttons {
+        padding: 2em 10em 2em 2em;
+    }
+
+    .buy-button {
+        margin-top: 5px;
+    }
+}
+
+
+@media (min-width: 992px) {
+
+    .buttons {
+        padding: 2em;
+    }
+
+    .buy-button {
+        margin-top: 5px;
+    }
+
+    .oneBuyBotton {
+        padding-right: 2em;
+    }
+
+    .infoText {
+
+    }
+}
+
+.infoText {
+    padding-top: 1em;
+    background-color: white;
+}
+
+.buttons {
+    background-color: white;
+}
+
+#mainBody {
+    background-color: lightgray;
+}
+
+.mainHeader {
+    background-color: white;
+    margin-top: 2em;
+    margin-bottom: 2em;
+    padding-top: 0.5em;
+    min-height: 8em;
+}
+
+#mainHeaderCurrentPlayer {
+    font-size: 1.2em;
+    text-decoration: underline;
+}
+
