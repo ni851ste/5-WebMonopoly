@@ -1,0 +1,9 @@
+@media (min-width: 992px) {
+    #textCol {
+        font-family: "Comic Sans MS", cursive, sans-serif;
+        background-color: lightgray;
+    }
+    h1, h2, h3, h4, h5 {
+        text-decoration: underline;
+    }
+}

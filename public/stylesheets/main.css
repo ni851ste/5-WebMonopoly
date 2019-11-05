@@ -1,3 +1,9 @@
+
+
+
+
+
+
 .infoText {
     margin: 0 auto;
     margin-left: 1em;
@@ -24,32 +30,4 @@
 }
 
 
-#textCol {
-    font-family: "Comic Sans MS", cursive, sans-serif;
-    background-color: aqua;
-    margin: 0 auto;
-    display: inline-block;
-    padding: 2.35em;
-    min-width:60%;
-    max-width: 60%;
-}
 
-#leftCol {
-    background-color: lightgrey;
-    float: left;
-    width: 18%;
-    height: 80.75em;
-
-}
-
-#rightCol {
-    background-color: lightgrey;
-    float:right;
-    width: 18%;
-    height: 80.75em;
-
-}
-
-h1, h2, h3, h4, h5 {
-    text-decoration: underline;
-}
