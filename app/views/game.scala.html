@@ -39,18 +39,29 @@
                         </div>
                     }
                     @if(controller.controllerState == GameStatus.CAN_BUILD) {
+                            <!--ul class="nav nav-tabs">
+                            <li class="active">
+                                <a href="#">Buying</a>
+                                <p>stuff</p>
+                            </li>
+                            <li class="active">
+                                <a href="#">Other</a>
+                            </li>
+                        </ul-->
+
                         <div class="btn-group row buttonGroup">
                             @for(fieldSet <- GeneralUtil.getWholeGroups(controller.getCurrentPlayer)) {
                                 @for(ownedField <- fieldSet) {
                                     <div class="oneBuyBotton">
                                         <p>
                                             @ownedField:
-                                            @controller.getFieldByName(ownedField).get.asInstanceOf[Street].numHouses
-                                             Houses
+                                            @for(_ <- 0 until controller.getFieldByName(ownedField).get.asInstanceOf[Street].numHouses) {
+                                                <img src="@routes.Assets.versioned("images/biggerHouse.png")" alt="alt?">
+                                                }
+                                        </p>
                                         <a href=@("/game/" + ownedField + "_1")>
                                             <input type="button" value="buy house on @ownedField" class="buy-button btn-primary"/>
                                         </a>
-                                        </p>
                                         <br>
                                     </div>
                                 }
@@ -67,7 +78,6 @@
                 <span class="col-lg-1"></span>
             </div>
         </div>
-
     </body>
 
 }
