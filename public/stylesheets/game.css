@@ -39,6 +39,17 @@
     background-color: white;
 }
 
+.infoText-div {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+}
+
+.infoText-div .letter {
+    display: inline-block;
+    line-height: 1em
+}
+
 .buttons {
     background-color: white;
 }
