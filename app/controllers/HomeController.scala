@@ -28,7 +28,7 @@ import play.api.mvc._
     def printState() = Action {
         implicit request: Request[AnyContent] =>
             controller.notifyObservers()
-            Ok(controller.getJSON())
+            Ok(views.html.game(controller, this))
     }
 
     def printStateWithInput(input: String) = Action {
