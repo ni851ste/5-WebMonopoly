@@ -4,10 +4,10 @@
 # ~~~~
 
 # An example controller showing a sample home page
-GET     /                        controllers.HomeController.rules
-GET     /game                  controllers.HomeController.printState()
-GET     /game/:input                   controllers.HomeController.printStateWithInput(input : String)
-GET     /game-msg               controllers.HomeController.getCurrentMessageWeb()
+GET     /                       controllers.HomeController.rules
+GET     /game                   controllers.HomeController.printState()
+GET     /game/:input            controllers.HomeController.printStateWithInput(input : String)
+GET     /game-msg               controllers.HomeController.getCurrentGameMessage()
 GET     /game-json              controllers.HomeController.getCurrentGameJson()
 
 
