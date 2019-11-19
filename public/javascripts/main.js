@@ -7,6 +7,15 @@ $(document).ready(function () {
             });
         }
     );
+    $("#quit-button").click(function () {
+        $.ajax("/game/q", {
+            method: "GET"
+        });
+        $("#mainBody").empty();
+        $("#mainBody").append(
+            $('<p>¯\\_(ツ)_/¯</p>').css({'font-size':'20em', 'font-weight':'bold', 'text-align':'center'})
+        ).css({'background-color':'pink'});
+    });
     $("#end-turn-button").click(function () {
         $.ajax("/game/e", {
             method: "GET",
@@ -14,6 +23,7 @@ $(document).ready(function () {
             success: update
         })
     });
+
     updateInfoText();
     $.ajax("/game-json", {
         method: "GET",
