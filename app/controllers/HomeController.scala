@@ -65,8 +65,7 @@ import play.api.mvc._
                 }
                 else
                 {
-                    val args = input.split("_")
-                    controller.tryToBuildHouses(args(0), args(1).toInt)
+                    controller.tryToBuildHouses(input, 1)
 
                 }
 
@@ -94,11 +93,15 @@ import play.api.mvc._
                 {
                     case GameStatus.BuildStatus.DEFAULT =>
                         "Rolled " + controller.currentDice + "\nNow on " + controller.getCurrentField.getName + ".\nYou can build houses."
-                    case GameStatus.BuildStatus.BUILT => "Succesfully build house"
+                    case GameStatus.BuildStatus.BUILT => "Successfully build house"
                 }
 
 
             case _ => "Unknown gamestate"
         }
+    }
+
+    def getCurrentGameJson() = {
+        controller.getJSON()
     }
 }

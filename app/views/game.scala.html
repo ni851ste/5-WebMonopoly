@@ -19,7 +19,7 @@
             </div>
             <div class="row">
                 <span class="col-lg-1"></span>
-                <span class="infoText border border-primary col-lg-6 col-md-10 ">
+                <span class="info-text border border-primary col-lg-6 col-md-10 ">
                     <div class="infoText-div">
                         <span class="letters">
                         @for(lineOfText <- htmlController.getCurrentMessageWeb().split("\n").map(_.toString()).toList) {
@@ -63,7 +63,7 @@
                                             }
                                         <script src="@routes.Assets.versioned("javascripts/animate_houses.js")" type="text/javascript"></script>
                                         </p>
-                                        <a href=@("/game/" + ownedField + "_1")>
+                                        <a href=@("/game/" + ownedField)>
                                             <input type="button" value="buy house on @ownedField" class="buy-button btn-primary"/>
                                         </a>
                                         <br>

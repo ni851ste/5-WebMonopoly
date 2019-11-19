@@ -7,6 +7,8 @@
 GET     /                        controllers.HomeController.rules
 GET     /game                  controllers.HomeController.printState()
 GET     /game/:input                   controllers.HomeController.printStateWithInput(input : String)
+GET     /game-msg               controllers.HomeController.getCurrentMessageWeb()
+GET     /game-json              controllers.HomeController.getCurrentGameJson()
 
 
 
