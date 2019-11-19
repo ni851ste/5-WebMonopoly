@@ -6,7 +6,10 @@
 @(controller: Controller, htmlController: HomeController)
 
 @main("Monopoly") {
-    <link rel="stylesheet" href='@routes.Assets.versioned("stylesheets/game.css")'/>
+    <head>
+        <link rel="stylesheet" href='@routes.Assets.versioned("stylesheets/game.css")'/>
+        <script src="@routes.Assets.versioned("javascripts/main.js")" type="text/javascript"></script>
+    </head>
 
     <body id="mainBody">
         <div class="container">
@@ -52,8 +55,8 @@
                             </li>
                         </ul-->
 
-                        <div class="btn-group row buttonGroup">
-                            @for(fieldSet <- GeneralUtil.getWholeGroups(controller.getCurrentPlayer)) {
+                        <div id="buy-buttons" class="btn-group row buttonGroup">
+                            <!--@for(fieldSet <- GeneralUtil.getWholeGroups(controller.getCurrentPlayer)) {
                                 @for(ownedField <- fieldSet) {
                                     <div class="oneBuyBotton">
                                         <p class="house-par">
@@ -61,15 +64,13 @@
                                             @for(_ <- 0 until controller.getFieldByName(ownedField).get.asInstanceOf[Street].numHouses) {
                                                 <img src="@routes.Assets.versioned("images/biggerHouse.png")" class="house" alt="alt?">
                                             }
-                                        <script src="@routes.Assets.versioned("javascripts/animate_houses.js")" type="text/javascript"></script>
+                                            <script src="@routes.Assets.versioned("javascripts/animate_houses.js")" type="text/javascript"></script>
                                         </p>
-                                        <a href=@("/game/" + ownedField + "_1")>
-                                            <input type="button" value="buy house on @ownedField" class="buy-button btn-primary"/>
-                                        </a>
+                                        <button id="@ownedField" class="buy-button btn-primary">Buy house on @ownedField</button>
                                         <br>
                                     </div>
                                 }
-                            }
+                            }-->
                             <br>
                             <div>
                                 <a href="/game/e">
