@@ -15,6 +15,11 @@ $(document).ready(function () {
         })
     });
     updateInfoText();
+    $.ajax("/game-json", {
+        method: "GET",
+        dataType: "json",
+        success: updatePlayerInfo
+    });
 });
 
 function generateBuyButtons(json) {
@@ -55,10 +60,10 @@ function generateBuyButtons(json) {
 
 function compareStreet(a, b) {
     if(a.name > b.name) {
-        return -1;
-    }
-    if(b.name > a.name) {
         return 1;
+    }
+    if(a.name < b.name) {
+        return -1;
     }
     return 0;
 }
