@@ -13,8 +13,8 @@ $(document).ready(function () {
         });
         $("#main-body").empty();
         $("#main-body").append(
-            $('<p>¯\\_(ツ)_/¯</p>').css({'font-size':'20em', 'font-weight':'bold', 'text-align':'center'})
-        ).css({'background-color':'pink'});
+            $('<p>¯\\_(ツ)_/¯</p>').css({'font-size': '20em', 'font-weight': 'bold', 'text-align': 'center'})
+        ).css({'background-color': 'pink'});
     });
     $("#end-turn-button").click(function () {
         $.ajax("/game/e", {
@@ -39,8 +39,8 @@ function generateBuyButtons(json) {
     currentPlayer.bought_fields.sort(compareStreet).forEach(f => {
         buyButtons.append(
             $('<div/>', {'class': 'one-buy-button'}).append(
-                $('<p/>', {'class': 'house-par', 'id':f.name + '-p'})
-                    .append($('<span/>', {'class':'buy-house-span','text':f.name}))
+                $('<p/>', {'class': 'house-par', 'id': f.name + '-p'})
+                    .append($('<span/>', {'class': 'buy-house-span', 'text': f.name}))
             ).append(
                 $('<button/>', {
                     'id': f.name + '-button',
@@ -56,12 +56,12 @@ function generateBuyButtons(json) {
                 })
             )
         );
-        for(let i = 0; i < f.houses; i++) {
+        for (let i = 0; i < f.houses; i++) {
             $("#" + f.name + '-p').append(
                 $('<img/>', {
-                    'src':'/assets/images/biggerHouse.png',
-                    'id':f.name + '-house-' + i,
-                    'class':'house'
+                    'src': '/assets/images/biggerHouse.png',
+                    'id': f.name + '-house-' + i,
+                    'class': 'house'
                     //ready: setTimeout(animateHouse(f.name + '-house-' + i), 0)
                 })
             )
@@ -70,10 +70,10 @@ function generateBuyButtons(json) {
 }
 
 function compareStreet(a, b) {
-    if(a.name > b.name) {
+    if (a.name > b.name) {
         return 1;
     }
-    if(a.name < b.name) {
+    if (a.name < b.name) {
         return -1;
     }
     return 0;
@@ -135,7 +135,7 @@ function animateHouse(houseID) {
 
 function update(json) {
     console.log(json);
-    switch(String(json.board.state)) {
+    switch (String(json.board.state)) {
         case "START_OF_TURN":
             removeBuyButtons();
             showStaticButtons();
@@ -155,17 +155,65 @@ function updateInfoText() {
     $.ajax("/game-msg", {
         method: "GET",
         dataType: "text",
-        success: function(response) {
+        success: function (response) {
             console.log("MSG: " + response);
-            $("#letters").empty();
-            response.split('\n').forEach(l => $("#letters").append('<p>' + l + '</p>'));
+            let letters = $("#letters");
+            letters.empty();
+            let lines = response.split('\n');
+            for (let i = 0; i < lines.length; i++) {
+                console.log(lines[i]);
+                const pId = "text-p" + i;
+                let p = $('<p/>', {'id': pId});
+                p.html(lines[i].replace(/\S/g, "<span class='letter'>$&</span>"));
+                letters.append(p);
+                animateText(document.querySelectorAll('#' + pId + ' .letter'));
+            }
         }
     })
 }
+
+function animateText(targets) {
+    let tl = anime.timeline({loop: false});
+    tl.add({
+        targets: targets,
+        translateY: ["2.5em", 0],
+        translateZ: 0,
+        duration: 500,
+        delay: function (el, i) {
+            return i * 25;
+        }
+    });
+}
+
 
 function updatePlayerInfo(json) {
     console.log(currentPlayerName(json));
     console.log(String(getCurrentMoney(json)));
     $("#main-header-current-player").text(currentPlayerName(json));
     $("#main-header-current-money").text("Money: " + getCurrentMoney(json))
+}
+
+function animateHouse() {
+    var tl = anime.timeline({loop: false, duration: 300})
+    tl.add({
+        targets: '.house-par .house',
+        rotate: {
+            value: 360
+        },
+        scale: {
+            value: 1.5,
+            easing: 'easeInOutQuart'
+        },
+        translateZ: 0
+    }).add({
+        targets: '.house-par .house',
+        rotate: {
+            value: 360,
+            direction: 'reverse'
+        },
+        scale: {
+            value: 1,
+            easing: 'easeInOutQuart'
+        }
+    });
 }
