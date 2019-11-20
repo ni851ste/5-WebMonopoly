@@ -23,6 +23,7 @@ $(document).ready(function () {
             success: update
         })
     });
+    showStaticButtons();
 
     updateInfoText();
     $.ajax("/game-json", {
@@ -62,7 +63,6 @@ function generateBuyButtons(json) {
                     'src': '/assets/images/biggerHouse.png',
                     'id': f.name + '-house-' + i,
                     'class': 'house'
-                    //ready: setTimeout(animateHouse(f.name + '-house-' + i), 0)
                 })
             )
         }
