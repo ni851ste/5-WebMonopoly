@@ -11,8 +11,8 @@ $(document).ready(function () {
         $.ajax("/game/q", {
             method: "GET"
         });
-        $("#mainBody").empty();
-        $("#mainBody").append(
+        $("#main-body").empty();
+        $("#main-body").append(
             $('<p>¯\\_(ツ)_/¯</p>').css({'font-size':'20em', 'font-weight':'bold', 'text-align':'center'})
         ).css({'background-color':'pink'});
     });
@@ -39,7 +39,8 @@ function generateBuyButtons(json) {
     currentPlayer.bought_fields.sort(compareStreet).forEach(f => {
         buyButtons.append(
             $('<div/>', {'class': 'one-buy-button'}).append(
-                $('<p/>', {'class': 'house-par', 'id':f.name + '-p', 'text':f.name})
+                $('<p/>', {'class': 'house-par', 'id':f.name + '-p'})
+                    .append($('<span/>', {'class':'buy-house-span','text':f.name}))
             ).append(
                 $('<button/>', {
                     'id': f.name + '-button',
@@ -165,6 +166,6 @@ function updateInfoText() {
 function updatePlayerInfo(json) {
     console.log(currentPlayerName(json));
     console.log(String(getCurrentMoney(json)));
-    $("#mainHeaderCurrentPlayer").text(currentPlayerName(json));
-    $("#mainHeaderCurrentMoney").text("Money " + getCurrentMoney(json))
+    $("#main-header-current-player").text(currentPlayerName(json));
+    $("#main-header-current-money").text("Money: " + getCurrentMoney(json))
 }

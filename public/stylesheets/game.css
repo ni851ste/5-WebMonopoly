@@ -24,9 +24,17 @@
         margin-top: 5px;
     }
 
-    .oneBuyBotton {
+    .one-buy-button {
         padding-right: 2em;
         margin-bottom: 1em;
+    }
+
+    .buy-house-span {
+        margin-right: 1em;
+    }
+
+    .house {
+        margin-right: 0.2em;
     }
 
     .info-text {
@@ -39,13 +47,13 @@
     background-color: white;
 }
 
-#infoText-div {
+#info-text-div {
     position: relative;
     display: inline-block;
     overflow: hidden;
 }
 
-#infoText-div .letter {
+#info-text-div .letter {
     display: inline-block;
     line-height: 1em
 }
@@ -54,11 +62,11 @@
     background-color: white;
 }
 
-#mainBody {
+#main-body {
     background-color: lightgray;
 }
 
-.mainHeader {
+.main-header {
     background-color: white;
     margin-top: 2em;
     margin-bottom: 2em;
@@ -66,7 +74,7 @@
     min-height: 8em;
 }
 
-#mainHeaderCurrentPlayer {
+#main-header-current-player {
     font-size: 1.2em;
     font-weight: bold;
     text-decoration: underline;
