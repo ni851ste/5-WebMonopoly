@@ -1,17 +1,22 @@
 package controllers
 
-import de.htwg.se.monopoly.controller.{Controller, GameStatus}
-import de.htwg.se.monopoly.util.Observer
+import akka.actor._
+import akka.stream.Materializer
+import de.htwg.se.monopoly.controller.{Controller, GameStatus, UpdateInfo}
 import de.htwg.se.monopoly.view.Tui
-import de.htwg.se.monopoly.controller.GameStatus
 import javax.inject._
 import play.api.mvc._
+import play.libs.streams.ActorFlow
+
+import scala.swing.Reactor
 
 /**
  * This controller creates an `Action` to handle HTTP requests to the
  * application's home page.
  */
-@Singleton class HomeController @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
+@Singleton class HomeController @Inject()(cc: ControllerComponents)(implicit system: ActorSystem, mat: Materializer)
+  extends AbstractController(cc) {
+
 
     val controller: Controller = new Controller()
     controller.controllerState = GameStatus.START_OF_TURN
@@ -19,15 +24,15 @@ import play.api.mvc._
     val tui: Tui = new Tui(controller)
 
     var monopolyAsString: String = ""
-    controller.add(new Observer {
+    /*controller.add(new Observer {
         override def update(): Unit = {
             Ok(getCurrentMessageWeb())
         }
-    })
+    })*/
 
     def printState() = Action {
         implicit request: Request[AnyContent] =>
-            controller.notifyObservers()
+            controller.publish(new UpdateInfo)
             Ok(views.html.game(controller, this))
     }
 
@@ -35,7 +40,7 @@ import play.api.mvc._
         implicit request: Request[AnyContent] =>
             print("HAAAALP   " + controller.controllerState + "    " + input + "\n")
             processInput(input)
-            controller.notifyObservers()
+            controller.publish(new UpdateInfo)
             Ok(controller.getJSON())
     }
 
@@ -89,4 +94,35 @@ import play.api.mvc._
     def getCurrentGameJson(): Action[AnyContent] = Action {
         Ok(controller.getJSON())
     }
+
+    def socket = WebSocket.accept[String, String] { request =>
+        ActorFlow.actorRef { out : ActorRef =>
+            println("Connect received")
+            MonopolyWebSocketActor.props(out)
+        }
+    }
+
+    object MonopolyWebSocketActor {
+        def props(out: ActorRef) = Props(new MonopolyWebSocketActor(out))
+    }
+
+    class MonopolyWebSocketActor(out: ActorRef) extends Actor with Reactor {
+        listenTo(controller)
+
+        def receive = {
+            case msg: String =>
+                out ! (controller.getJSON().toString())
+                println("Sent Json to Client" + msg)
+        }
+
+        reactions += {
+            case event: UpdateInfo => sendJsonToClient
+        }
+
+        def sendJsonToClient = {
+            println("Received event from Controller")
+            out ! (controller.getJSON().toString())
+        }
+    }
+
 }

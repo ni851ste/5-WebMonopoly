@@ -31,6 +31,7 @@ $(document).ready(function () {
         dataType: "json",
         success: updatePlayerInfo
     });
+    connectWebSocket();
 });
 
 function generateBuyButtons(json) {
@@ -152,7 +153,7 @@ function update(json) {
 }
 
 function updateInfoText() {
-    $.ajax("/game-msg", {
+        $.ajax("/game-msg", {
         method: "GET",
         dataType: "text",
         success: function (response) {
@@ -216,4 +217,25 @@ function animateHouse() {
             easing: 'easeInOutQuart'
         }
     });
+}
+
+function connectWebSocket() {
+    let websocket = new WebSocket("ws://localhost:9000/websocket");
+    websocket.setTimeout;
+
+    websocket.onopen = function(event) {
+        console.log("Connected to Websocket");
+    };
+
+    websocket.onclose = function () {
+        console.log('Connection with Websocket Closed!');
+    };
+
+    websocket.onerror = function (error) {
+        console.log('Error in Websocket Occured: ' + error);
+    };
+
+    websocket.onmessage = function (e) {
+        update(e.data);
+    };
 }
