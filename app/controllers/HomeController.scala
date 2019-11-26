@@ -1,21 +1,23 @@
 package controllers
 
-import akka.actor._
-import akka.stream.Materializer
-import de.htwg.se.monopoly.controller.{Controller, GameStatus, UpdateInfo}
-import de.htwg.se.monopoly.view.Tui
 import javax.inject._
 import play.api.mvc._
-import play.libs.streams.ActorFlow
+import play.api.libs.streams.ActorFlow
+import akka.actor.ActorSystem
+import akka.stream.Materializer
+import akka.actor._
+import de.htwg.se.monopoly.controller.{Controller, GameStatus, UpdateInfo}
+import de.htwg.se.monopoly.view.Tui
 
 import scala.swing.Reactor
+
 
 /**
  * This controller creates an `Action` to handle HTTP requests to the
  * application's home page.
  */
-@Singleton class HomeController @Inject()(cc: ControllerComponents)(implicit system: ActorSystem, mat: Materializer)
-  extends AbstractController(cc) {
+@Singleton
+class HomeController @Inject()(cc: ControllerComponents)(implicit system: ActorSystem, mat: Materializer) extends AbstractController(cc) {
 
 
     val controller: Controller = new Controller()
@@ -96,7 +98,7 @@ import scala.swing.Reactor
     }
 
     def socket = WebSocket.accept[String, String] { request =>
-        ActorFlow.actorRef { out : ActorRef =>
+        ActorFlow.actorRef{ out : ActorRef =>
             println("Connect received")
             MonopolyWebSocketActor.props(out)
         }
