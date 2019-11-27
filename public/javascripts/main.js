@@ -1,5 +1,9 @@
+let websocket;
 $(document).ready(function () {
+    connectWebSocket();
     $("#roll-button").click(function () {
+        // Here we would normally send the command via websocket
+        //websocket.send()
             $.ajax("/game/r", {
                 method: "GET",
                 dataType: "json",
@@ -31,7 +35,7 @@ $(document).ready(function () {
         dataType: "json",
         success: updatePlayerInfo
     });
-    connectWebSocket();
+    //connectWebSocket();
 });
 
 function generateBuyButtons(json) {
@@ -220,7 +224,7 @@ function animateHouse() {
 }
 
 function connectWebSocket() {
-    let websocket = new WebSocket("ws://localhost:9000/websocket");
+    websocket = new WebSocket("ws://localhost:9000/websocket");
     websocket.setTimeout;
 
     websocket.onopen = function(event) {
@@ -232,10 +236,14 @@ function connectWebSocket() {
     };
 
     websocket.onerror = function (error) {
-        console.log('Error in Websocket Occured: ' + error);
+        console.log('Error in Websocket Occurred: ' + error);
     };
 
     websocket.onmessage = function (e) {
-        update(e.data);
+        if (typeof e.data === "string") {
+            let json = JSON.parse(e.data);
+            console.log("MESSAGE: " + JSON.stringify(json));
+            update(json);
+        }
     };
 }

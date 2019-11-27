@@ -1,13 +1,12 @@
 package controllers
 
-import javax.inject._
-import play.api.mvc._
-import play.api.libs.streams.ActorFlow
-import akka.actor.ActorSystem
+import akka.actor.{ActorSystem, _}
 import akka.stream.Materializer
-import akka.actor._
 import de.htwg.se.monopoly.controller.{Controller, GameStatus, UpdateInfo}
 import de.htwg.se.monopoly.view.Tui
+import javax.inject._
+import play.api.libs.streams.ActorFlow
+import play.api.mvc._
 
 import scala.swing.Reactor
 
@@ -98,7 +97,7 @@ class HomeController @Inject()(cc: ControllerComponents)(implicit system: ActorS
     }
 
     def socket = WebSocket.accept[String, String] { request =>
-        ActorFlow.actorRef{ out : ActorRef =>
+        ActorFlow.actorRef { out: ActorRef =>
             println("Connect received")
             MonopolyWebSocketActor.props(out)
         }
@@ -123,7 +122,9 @@ class HomeController @Inject()(cc: ControllerComponents)(implicit system: ActorS
 
         def sendJsonToClient = {
             println("Received event from Controller")
-            out ! (controller.getJSON().toString())
+            val json = controller.getJSON()
+            println("Sending to websocket: " + play.api.libs.json.Json.prettyPrint(json))
+            out ! (json.toString())
         }
     }
 
