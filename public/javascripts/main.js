@@ -1,41 +1,26 @@
+const ROLL = "r";
+const QUIT = "q";
+const END_TURN = "e";
+const GET_JSON = "json";
+
 let websocket;
 $(document).ready(function () {
-    connectWebSocket();
     $("#roll-button").click(function () {
-        // Here we would normally send the command via websocket
-        //websocket.send()
-            $.ajax("/game/r", {
-                method: "GET",
-                dataType: "json",
-                success: update
-            });
+            websocket.send(ROLL);
         }
     );
     $("#quit-button").click(function () {
-        $.ajax("/game/q", {
-            method: "GET"
-        });
+        websocket.send(QUIT);
         $("#main-body").empty();
         $("#main-body").append(
             $('<p>¯\\_(ツ)_/¯</p>').css({'font-size': '20em', 'font-weight': 'bold', 'text-align': 'center'})
         ).css({'background-color': 'pink'});
     });
     $("#end-turn-button").click(function () {
-        $.ajax("/game/e", {
-            method: "GET",
-            dataType: "json",
-            success: update
-        })
+        websocket.send(END_TURN);
     });
     showStaticButtons();
-
-    updateInfoText();
-    $.ajax("/game-json", {
-        method: "GET",
-        dataType: "json",
-        success: updatePlayerInfo
-    });
-    //connectWebSocket();
+    connectWebSocket();
 });
 
 function generateBuyButtons(json) {
@@ -153,28 +138,29 @@ function update(json) {
             alert("Unknown game status: " + String(json.board.state))
     }
     updatePlayerInfo(json);
-    updateInfoText();
+    updateInfoText(String(json.msg));
 }
 
-function updateInfoText() {
-        $.ajax("/game-msg", {
-        method: "GET",
-        dataType: "text",
-        success: function (response) {
-            console.log("MSG: " + response);
-            let letters = $("#letters");
-            letters.empty();
-            let lines = response.split('\n');
-            for (let i = 0; i < lines.length; i++) {
-                console.log(lines[i]);
-                const pId = "text-p" + i;
-                let p = $('<p/>', {'id': pId});
-                p.html(lines[i].replace(/\S/g, "<span class='letter'>$&</span>"));
-                letters.append(p);
-                animateText(document.querySelectorAll('#' + pId + ' .letter'));
-            }
-        }
-    })
+function updateInfoText(msg) {
+    console.log("MSG: " + msg);
+    let letters = $("#letters");
+    letters.empty();
+    let lines = msg.split('\n');
+    for (let i = 0; i < lines.length; i++) {
+        console.log(lines[i]);
+        const pId = "text-p" + i;
+        let p = $('<p/>', {'id': pId});
+        p.html(lines[i].replace(/\S/g, "<span class='letter'>$&</span>"));
+        letters.append(p);
+        animateText(document.querySelectorAll('#' + pId + ' .letter'));
+    }
+}
+
+function updatePlayerInfo(json) {
+    console.log(currentPlayerName(json));
+    console.log(String(getCurrentMoney(json)));
+    $("#main-header-current-player").text(currentPlayerName(json));
+    $("#main-header-current-money").text("Money: " + getCurrentMoney(json))
 }
 
 function animateText(targets) {
@@ -190,16 +176,8 @@ function animateText(targets) {
     });
 }
 
-
-function updatePlayerInfo(json) {
-    console.log(currentPlayerName(json));
-    console.log(String(getCurrentMoney(json)));
-    $("#main-header-current-player").text(currentPlayerName(json));
-    $("#main-header-current-money").text("Money: " + getCurrentMoney(json))
-}
-
 function animateHouse() {
-    var tl = anime.timeline({loop: false, duration: 300})
+    let tl = anime.timeline({loop: false, duration: 300})
     tl.add({
         targets: '.house-par .house',
         rotate: {
@@ -227,12 +205,43 @@ function connectWebSocket() {
     websocket = new WebSocket("ws://localhost:9000/websocket");
     websocket.setTimeout;
 
-    websocket.onopen = function(event) {
+    websocket.onopen = function (event) {
+        //updateInfoText();
+        websocket.send(GET_JSON);
         console.log("Connected to Websocket");
     };
 
-    websocket.onclose = function () {
-        console.log('Connection with Websocket Closed!');
+    websocket.onclose = function (event) {
+        let reason;
+        if (event.code === 1000)
+            reason = "Normal closure, meaning that the purpose for which the connection was established has been fulfilled.";
+        else if (event.code === 1001)
+            reason = "An endpoint is \"going away\", such as a server going down or a browser having navigated away from a page.";
+        else if (event.code === 1002)
+            reason = "An endpoint is terminating the connection due to a protocol error";
+        else if (event.code === 1003)
+            reason = "An endpoint is terminating the connection because it has received a type of data it cannot accept (e.g., an endpoint that understands only text data MAY send this if it receives a binary message).";
+        else if (event.code === 1004)
+            reason = "Reserved. The specific meaning might be defined in the future.";
+        else if (event.code === 1005)
+            reason = "No status code was actually present.";
+        else if (event.code === 1006)
+            reason = "The connection was closed abnormally, e.g., without sending or receiving a Close control frame";
+        else if (event.code === 1007)
+            reason = "An endpoint is terminating the connection because it has received data within a message that was not consistent with the type of the message (e.g., non-UTF-8 [http://tools.ietf.org/html/rfc3629] data within a text message).";
+        else if (event.code === 1008)
+            reason = "An endpoint is terminating the connection because it has received a message that \"violates its policy\". This reason is given either if there is no other sutible reason, or if there is a need to hide specific details about the policy.";
+        else if (event.code === 1009)
+            reason = "An endpoint is terminating the connection because it has received a message that is too big for it to process.";
+        else if (event.code === 1010) // Note that this status code is not used by the server, because it can fail the WebSocket handshake instead.
+            reason = "An endpoint (client) is terminating the connection because it has expected the server to negotiate one or more extension, but the server didn't return them in the response message of the WebSocket handshake. <br /> Specifically, the extensions that are needed are: " + event.reason;
+        else if (event.code === 1011)
+            reason = "A server is terminating the connection because it encountered an unexpected condition that prevented it from fulfilling the request.";
+        else if (event.code === 1015)
+            reason = "The connection was closed due to a failure to perform a TLS handshake (e.g., the server certificate can't be verified).";
+        else
+            reason = "Unknown reason";
+        alert("Websocket closed: " + reason);
     };
 
     websocket.onerror = function (error) {
@@ -240,10 +249,10 @@ function connectWebSocket() {
     };
 
     websocket.onmessage = function (e) {
+        console.log(JSON.parse(e.data));
         if (typeof e.data === "string") {
-            let json = JSON.parse(e.data);
-            console.log("MESSAGE: " + JSON.stringify(json));
-            update(json);
+            update(JSON.parse(e.data));
+            console.log("MESSAGE: " + e.data);
         }
     };
 }

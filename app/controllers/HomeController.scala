@@ -5,6 +5,7 @@ import akka.stream.Materializer
 import de.htwg.se.monopoly.controller.{Controller, GameStatus, UpdateInfo}
 import de.htwg.se.monopoly.view.Tui
 import javax.inject._
+import play.api.libs.json.{JsObject, Json}
 import play.api.libs.streams.ActorFlow
 import play.api.mvc._
 
@@ -47,7 +48,9 @@ class HomeController @Inject()(cc: ControllerComponents)(implicit system: ActorS
 
     private def processInput(input: String) = {
 
-        if (input.equals("q")) System.exit(0)
+        if (input.equals("q"))  {
+            System.exit(0)
+        }
 
         print("\n############ " + controller.controllerState + " --- " + input + "\n")
         controller.controllerState match {
@@ -112,8 +115,12 @@ class HomeController @Inject()(cc: ControllerComponents)(implicit system: ActorS
 
         def receive = {
             case msg: String =>
-                out ! (controller.getJSON().toString())
-                println("Sent Json to Client" + msg)
+                println("RECEIVED IN SERVER: " + msg)
+                msg match {
+                    case "json" => // just send json
+                    case _ => processInput(msg)
+                }
+                sendJsonToClient
         }
 
         reactions += {
@@ -122,7 +129,7 @@ class HomeController @Inject()(cc: ControllerComponents)(implicit system: ActorS
 
         def sendJsonToClient = {
             println("Received event from Controller")
-            val json = controller.getJSON()
+            val json = controller.getJSON().as[JsObject] + ("msg" -> Json.toJson(getCurrentMessageWeb()))
             println("Sending to websocket: " + play.api.libs.json.Json.prettyPrint(json))
             out ! (json.toString())
         }
