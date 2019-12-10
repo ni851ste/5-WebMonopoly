@@ -1,0 +1,6 @@
+{
+  "name": "monopoly",
+  "short_name": "monopoly",
+  "start_url": "/",
+  "display": "standalone"
+}

@@ -1,3 +1,4 @@
+import '@material/mwc-button';
 const ROLL = "r";
 const QUIT = "q";
 const END_TURN = "e";
@@ -33,10 +34,11 @@ function generateBuyButtons(json) {
                 $('<p/>', {'class': 'house-par', 'id': f.name + '-p'})
                     .append($('<span/>', {'class': 'buy-house-span', 'text': f.name}))
             ).append(
-                $('<button/>', {
+                $('<mwc-button/>', {
+                    'outlined' : 'true',
+                    'label': 'outlined',//'Buy house on ' + f.name,
                     'id': f.name + '-button',
                     'class': 'buy-button btn-primary',
-                    'text': "Buy house on " + f.name,
                     click: () => {
                         $.ajax("/game/" + f.name, {
                             method: "GET",
@@ -177,7 +179,7 @@ function animateText(targets) {
     });
 }
 
-function animateHouse() {
+/*function animateHouse() {
     let tl = anime.timeline({loop: false, duration: 300})
     tl.add({
         targets: '.house-par .house',
@@ -200,7 +202,7 @@ function animateHouse() {
             easing: 'easeInOutQuart'
         }
     });
-}
+}*/
 
 function connectWebSocket() {
     websocket = new WebSocket("ws://localhost:9000/websocket");
