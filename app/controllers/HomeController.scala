@@ -69,6 +69,10 @@ class HomeController @Inject()(cc: ControllerComponents)(implicit system: ActorS
             Ok(views.html.rules());
     }
 
+    def polymer = Action {
+        implicit request: Request[AnyContent] =>
+            Ok(views.html.polymer());
+    }
     def getCurrentGameMessage(): Action[AnyContent] = Action {
         Ok(getCurrentMessageWeb())
     }

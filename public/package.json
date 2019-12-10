@@ -1,5 +1,5 @@
 {
-  "name": "WebMonopoly",
+  "name": "monopoly",
   "dependencies": {
     "@polymer/polymer": "^3.0.0"
   },

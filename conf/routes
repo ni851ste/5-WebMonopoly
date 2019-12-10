@@ -11,6 +11,7 @@ GET     /game-msg               controllers.HomeController.getCurrentGameMessage
 GET     /game-json              controllers.HomeController.getCurrentGameJson()
 
 GET     /websocket                  controllers.HomeController.socket
+GET     /polymer                    controllers.HomeController.polymer
 
 
 

@@ -1,4 +1,3 @@
-import '@material/mwc-button';
 const ROLL = "r";
 const QUIT = "q";
 const END_TURN = "e";
