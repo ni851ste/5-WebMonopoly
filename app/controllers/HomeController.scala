@@ -26,11 +26,6 @@ class HomeController @Inject()(cc: ControllerComponents)(implicit system: ActorS
     val tui: Tui = new Tui(controller)
 
     var monopolyAsString: String = ""
-    /*controller.add(new Observer {
-        override def update(): Unit = {
-            Ok(getCurrentMessageWeb())
-        }
-    })*/
 
     def printState() = Action {
         implicit request: Request[AnyContent] =>
@@ -48,27 +43,24 @@ class HomeController @Inject()(cc: ControllerComponents)(implicit system: ActorS
 
     private def processInput(input: String) = {
 
-        if (input.equals("q"))  {
+        if (input.equals("q")) {
             System.exit(0)
         }
 
         print("\n############ " + controller.controllerState + " --- " + input + "\n")
         controller.controllerState match {
             case GameStatus.START_OF_TURN => input match {
-                case "r" => val (d1, d2) = controller.rollDice()
-                    controller.processRoll(d1, d2)
+                case "r" => controller.rollDice()
             }
-
             case GameStatus.CAN_BUILD =>
                 if (input.equals("e")) {
                     controller.nextPlayer()
                 }
                 else {
-                    controller.tryToBuildHouses(input, 1)
-
+                    controller.buildHouses(input, 1)
                 }
-        }
-        getCurrentGameJson()
+            }
+            getCurrentGameJson()
     }
 
     def rules = Action {

@@ -138,6 +138,7 @@ function update(json) {
             alert("Unknown game status: " + String(json.board.state))
     }
     updatePlayerInfo(json);
+    console.log("Sending to updateInfoText: " + String(json.msg))
     updateInfoText(String(json.msg));
 }
 
