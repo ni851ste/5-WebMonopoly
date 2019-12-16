@@ -1,9 +1,10 @@
 @import de.htwg.se.monopoly.controller.GameStatus
-@import de.htwg.se.monopoly.controller.Controller
+@import de.htwg.se.monopoly.controller.controllerBaseImpl.Controller
 @import de.htwg.se.monopoly.util.GeneralUtil
 @import de.htwg.se.monopoly.model.boardComponent.Street
 
-@(controller: Controller, htmlController: HomeController)
+@import de.htwg.se.monopoly.controller.IController
+@(controller: IController, htmlController: HomeController)
 
 @main("Monopoly") {
     <head>

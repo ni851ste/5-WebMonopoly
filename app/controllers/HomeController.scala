@@ -2,7 +2,8 @@ package controllers
 
 import akka.actor.{ActorSystem, _}
 import akka.stream.Materializer
-import de.htwg.se.monopoly.controller.{Controller, GameStatus, UpdateInfo}
+import de.htwg.se.monopoly.controller.{GameStatus, IController}
+import de.htwg.se.monopoly.controller.controllerBaseImpl.{Controller, UpdateInfo}
 import de.htwg.se.monopoly.view.Tui
 import javax.inject._
 import play.api.libs.json.{JsObject, Json}
@@ -20,7 +21,7 @@ import scala.swing.Reactor
 class HomeController @Inject()(cc: ControllerComponents)(implicit system: ActorSystem, mat: Materializer) extends AbstractController(cc) {
 
 
-    val controller: Controller = new Controller()
+    val controller: IController = new Controller()
     controller.controllerState = GameStatus.START_OF_TURN
 
     val tui: Tui = new Tui(controller)
@@ -38,7 +39,7 @@ class HomeController @Inject()(cc: ControllerComponents)(implicit system: ActorS
             print("HAAAALP   " + controller.controllerState + "    " + input + "\n")
             processInput(input)
             controller.publish(new UpdateInfo)
-            Ok(controller.getJSON())
+            Ok(controller.getJSON)
     }
 
     private def processInput(input: String) = {
@@ -88,7 +89,7 @@ class HomeController @Inject()(cc: ControllerComponents)(implicit system: ActorS
     }
 
     def getCurrentGameJson(): Action[AnyContent] = Action {
-        Ok(controller.getJSON())
+        Ok(controller.getJSON)
     }
 
     def socket = WebSocket.accept[String, String] { request =>
@@ -121,7 +122,7 @@ class HomeController @Inject()(cc: ControllerComponents)(implicit system: ActorS
 
         def sendJsonToClient = {
             println("Received event from Controller")
-            val json = controller.getJSON().as[JsObject] + ("msg" -> Json.toJson(getCurrentMessageWeb()))
+            val json = controller.getJSON.as[JsObject] + ("msg" -> Json.toJson(getCurrentMessageWeb()))
             println("Sending to websocket: " + play.api.libs.json.Json.prettyPrint(json))
             out ! (json.toString())
         }
