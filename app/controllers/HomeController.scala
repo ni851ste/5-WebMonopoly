@@ -22,9 +22,7 @@ class HomeController @Inject()(cc: ControllerComponents)(implicit system: ActorS
 
 
     val controller: IController = new Controller()
-    controller.controllerState = GameStatus.START_OF_TURN
-
-    val tui: Tui = new Tui(controller)
+    controller.setUp()
 
     var monopolyAsString: String = ""
 
