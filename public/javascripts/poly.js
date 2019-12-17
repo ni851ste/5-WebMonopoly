@@ -1,7 +1,6 @@
 import {LitElement, html} from '@polymer/polymer';
-import '@vaadin/vaadin-button/vaadin-button';
+import '@vaadin/vaadin-button/vaadin-button.js';
 import '@polymer/iron-demo-helpers/demo-snippet.js';
-import '@polymer/paper-checkbox/paper-checkbox.js';
 
 class MainPage extends LitElement {
     static get template() {

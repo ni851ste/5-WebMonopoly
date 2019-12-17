@@ -13,7 +13,7 @@
         import '@polymer/iron-demo-helpers/demo-snippet';
     </script>
 
-    <script type="module" src="../public/javascripts/poly.js"></script>
+    <script type="module" src="../main-page.js"></script>
 
     <custom-style>
         <style is="custom-style" include="demo-pages-shared-styles">
@@ -21,10 +21,14 @@
     </custom-style>
 </head>
 <body id="main-body">
-<div class="container">
-    <main-page>
-
-    </main-page>
-</div>
+<div class="vertical-section-container centered">
+      <h3>Button Box</h3>
+      <demo-snippet>
+        <template>
+          <main-page btnname="TEST NAME"></main-page>
+          <tile-element tid="0R7"></tile-element>
+        </template>
+      </demo-snippet>
+    </div>
 </body>
 </html>
