@@ -22,7 +22,7 @@ class HomeController @Inject()(cc: ControllerComponents)(implicit system: ActorS
 
 
     val controller: IController = new Controller()
-    controller.setUp()
+    controller.setUp
 
     var monopolyAsString: String = ""
 
@@ -49,11 +49,11 @@ class HomeController @Inject()(cc: ControllerComponents)(implicit system: ActorS
         print("\n############ " + controller.controllerState + " --- " + input + "\n")
         controller.controllerState match {
             case GameStatus.START_OF_TURN => input match {
-                case "r" => controller.rollDice()
+                case "r" => controller.rollDice
             }
             case GameStatus.CAN_BUILD =>
                 if (input.equals("e")) {
-                    controller.nextPlayer()
+                    controller.nextPlayer
                 }
                 else {
                     controller.buildHouses(input, 1)

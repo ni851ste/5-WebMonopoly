@@ -135,7 +135,7 @@ function update(json) {
             generateBuyButtons(json);
             break;
         default:
-            alert("Unknown game status: " + String(json.board.state))
+            Console.log("Unknown game status: " + String(json.board.state))
     }
     updatePlayerInfo(json);
     console.log("Sending to updateInfoText: " + String(json.msg))
