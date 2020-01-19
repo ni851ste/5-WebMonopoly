@@ -138,8 +138,11 @@ function update(json) {
             Console.log("Unknown game status: " + String(json.board.state))
     }
     updatePlayerInfo(json);
-    console.log("Sending to updateInfoText: " + String(json.msg))
-    updateInfoText(String(json.msg));
+    if(json.hasOwnProperty('msg')) {
+        let msg = String(json.msg);
+        console.log("Sending to updateInfoText: " + msg);
+        updateInfoText(msg);
+    }
 }
 
 function updateInfoText(msg) {
@@ -250,10 +253,9 @@ function connectWebSocket() {
     };
 
     websocket.onmessage = function (e) {
-        console.log(JSON.parse(e.data));
+        console.log("MESSAGE: " + e.data);
         if (typeof e.data === "string") {
             update(JSON.parse(e.data));
-            console.log("MESSAGE: " + e.data);
         }
     };
 }

@@ -4,7 +4,6 @@ import akka.actor.{ActorSystem, _}
 import akka.stream.Materializer
 import de.htwg.se.monopoly.controller.{GameStatus, IController}
 import de.htwg.se.monopoly.controller.controllerBaseImpl.{Controller, UpdateInfo}
-import de.htwg.se.monopoly.view.Tui
 import javax.inject._
 import play.api.libs.json.{JsObject, Json}
 import play.api.libs.streams.ActorFlow
@@ -22,7 +21,7 @@ class HomeController @Inject()(cc: ControllerComponents)(implicit system: ActorS
 
 
     val controller: IController = new Controller()
-    controller.setUp
+    controller.setUp()
 
     var monopolyAsString: String = ""
 
