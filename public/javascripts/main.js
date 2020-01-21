@@ -38,11 +38,7 @@ function generateBuyButtons(json) {
                     'class': 'buy-button btn-primary',
                     'text': "Buy house on " + f.name,
                     click: () => {
-                        $.ajax("/game/" + f.name, {
-                            method: "GET",
-                            dataType: "json",
-                            success: update
-                        })
+                        websocket.send(f.name)
                     }
                 })
             )

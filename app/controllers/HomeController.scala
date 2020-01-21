@@ -21,7 +21,7 @@ class HomeController @Inject()(cc: ControllerComponents)(implicit system: ActorS
 
 
     val controller: IController = new Controller()
-    controller.setUp()
+    controller.setUp
 
     var monopolyAsString: String = ""
 
