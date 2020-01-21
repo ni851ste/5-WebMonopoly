@@ -23,8 +23,6 @@ class HomeController @Inject()(cc: ControllerComponents)(implicit system: ActorS
     val controller: IController = new Controller()
     controller.setUp
 
-    var monopolyAsString: String = ""
-
     def printState() = Action {
         implicit request: Request[AnyContent] =>
             controller.publish(new UpdateInfo)
@@ -42,7 +40,7 @@ class HomeController @Inject()(cc: ControllerComponents)(implicit system: ActorS
     private def processInput(input: String) = {
 
         if (input.equals("q")) {
-            System.exit(0)
+            controller.setUp
         }
 
         print("\n############ " + controller.controllerState + " --- " + input + "\n")
