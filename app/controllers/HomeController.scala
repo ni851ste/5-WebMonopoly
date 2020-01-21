@@ -77,7 +77,7 @@ class HomeController @Inject()(cc: ControllerComponents)(implicit system: ActorS
                 controller.buildStatus match {
                     case GameStatus.BuildStatus.DEFAULT =>
                         "Rolled " + controller.currentDice + "\nNow on " + controller.getCurrentField.getName + ".\nYou can build houses."
-                    case GameStatus.BuildStatus.BUILT => "Successfully build house"
+                    case GameStatus.BuildStatus.BUILT => "Successfully built house"
                 }
 
 
