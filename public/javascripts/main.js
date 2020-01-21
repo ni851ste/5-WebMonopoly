@@ -32,16 +32,15 @@ function generateBuyButtons(json) {
             $('<div/>', {'class': 'one-buy-button'}).append(
                 $('<p/>', {'class': 'house-par', 'id': f.name + '-p'})
                     .append($('<span/>', {'class': 'buy-house-span', 'text': f.name}))
-            ).append(
-                $('<button/>', {
-                    'id': f.name + '-button',
-                    'class': 'buy-button btn-primary',
-                    'text': "Buy house on " + f.name,
-                    click: () => {
-                        websocket.send(f.name)
-                    }
-                })
-            )
+            ).append($('<button/>', {
+                'id': f.name + '-button',
+                'title': f.houseCost + '€',
+                'class': 'buy-button btn-primary',
+                'text': "Buy house on " + f.name,
+                click: () => {
+                    websocket.send(f.name)
+                }
+            }))
         );
         for (let i = 0; i < f.houses; i++) {
             $("#" + f.name + '-p').append(
