@@ -77,7 +77,11 @@ class HomeController @Inject()(cc: ControllerComponents)(implicit system: ActorS
                 controller.buildStatus match {
                     case GameStatus.BuildStatus.DEFAULT =>
                         "Rolled " + controller.currentDice + "\nNow on " + controller.getCurrentField.getName + ".\nYou can build houses."
-                    case GameStatus.BuildStatus.BUILT => "Successfully build house"
+                    case GameStatus.BuildStatus.MISSING_MONEY =>
+                        "You don't have enough money to build a house on " + controller.getCurrentField.getName
+                    case GameStatus.BuildStatus.TOO_MANY_HOUSES =>
+                        "You can only build 5 houses per Street"
+                    case GameStatus.BuildStatus.BUILT => "Successfully built house"
                 }
 
 
