@@ -35,28 +35,31 @@ class HomeController @Inject()(cc: ControllerComponents)(implicit system: ActorS
             processInput(input)
             controller.publish(new UpdateInfo)
             Ok(controller.getJSON)
+
     }
 
     private def processInput(input: String) = {
 
         if (input.equals("q")) {
             controller.setUp
+            controller.buildStatus = DEFAULT
+            controller.buildStatus = GameStatus.BuildStatus.DEFAULT
+        } else {
+            print("\n############ " + controller.controllerState + " --- " + input + "\n")
+            controller.controllerState match {
+                case GameStatus.START_OF_TURN => input match {
+                    case "r" => controller.rollDice
+                }
+                case GameStatus.CAN_BUILD =>
+                    if (input.equals("e")) {
+                        controller.nextPlayer
+                    }
+                    else {
+                        controller.buildHouses(input, 1)
+                    }
+            }
         }
-
-        print("\n############ " + controller.controllerState + " --- " + input + "\n")
-        controller.controllerState match {
-            case GameStatus.START_OF_TURN => input match {
-                case "r" => controller.rollDice
-            }
-            case GameStatus.CAN_BUILD =>
-                if (input.equals("e")) {
-                    controller.nextPlayer
-                }
-                else {
-                    controller.buildHouses(input, 1)
-                }
-            }
-            getCurrentGameJson()
+        getCurrentGameJson()
     }
 
     def rules = Action {
